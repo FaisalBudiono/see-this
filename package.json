@@ -1,6 +1,9 @@
 {
   "scripts": {
-    "tw": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch"
+    "tw": "npx tailwindcss -i ./src/input.css -o ./dist/tw.css ",
+    "tw:watch": "npx tailwindcss -i ./src/input.css -o ./dist/tw.css --watch",
+    "tw:build": "npx tailwindcss -i ./src/input.css -o ./dist/tw.css --minify",
+    "temple": "templ generate"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.7"
