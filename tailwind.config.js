@@ -1,4 +1,5 @@
 import plugin from "tailwindcss/plugin";
+import forms from "@tailwindcss/forms";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -7,6 +8,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
+    forms,
     plugin(function ({ addUtilities }) {
       addUtilities({
         ".debug": {
