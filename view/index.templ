@@ -1,29 +1,40 @@
 package view
 
-templ Base(content templ.Component) {
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Website</title>
-    <link rel="stylesheet" href="/dist/tw.css">
-</head>
-<body>
-    <main>
-        @content
-    </main>
-</body>
-</html>
+import (
+	"FaisalBudiono/see-this/app/db"
+)
+
+templ IndexPage(resources []db.Resource) {
+	@Base(index(resources))
 }
 
-templ Kuda(name string) {
-    @Base(kambing(name))
+templ ResourceList(resources []db.Resource) {
+	<div id="resource-list" class="flex flex-col">
+		for _, r := range resources {
+			<div>{ r.Name }</div>
+		}
+	</div>
 }
 
-templ kambing(name string) {
-    <div class="text-white bg-red-500">
-        kambing, { name }
-    </div>
+templ index(resources []db.Resource) {
+	<div class="flex flex-row w-full">
+		<nav class="basis-1/3">
+			@ResourceList(resources)
+		</nav>
+		<main class="basis-2/3">
+			@form()
+		</main>
+	</div>
+}
+
+templ form() {
+	<form hx-post="/resources" hx-swap="outerHTML" hx-target="#resource-list" class="flex flex-col space-y-2">
+		<div>
+			Name:
+			<input type="text" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+		</div>
+		<button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+			Save
+		</button>
+	</form>
 }
