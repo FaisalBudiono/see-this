@@ -3,6 +3,7 @@ package main
 import (
 	"FaisalBudiono/see-this/app/db"
 	"FaisalBudiono/see-this/app/httpren"
+	"FaisalBudiono/see-this/app/strf"
 	"FaisalBudiono/see-this/view"
 	"net/http"
 
@@ -10,47 +11,40 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-var (
-	tempResources = make([]db.Resource, 0)
-	id            = 2
-)
-
-func makeDummyResource() []db.Resource {
-	return []db.Resource{
-		{
-			Id:   1,
-			Name: "asd",
-		},
-		{
-			Id:   2,
-			Name: "kambing",
-		},
-	}
-}
-
 func main() {
 	e := echo.New()
 
-	tempResources = append(tempResources, makeDummyResource()...)
+	db.Init()
 
 	e.Static("dist", "dist")
 
 	e.Use(middleware.Logger())
 
 	e.GET("/", func(c echo.Context) error {
-		return httpren.Render(c, http.StatusOK, view.IndexPage(tempResources))
+		return httpren.Render(
+			c,
+			http.StatusOK,
+			view.IndexPage(db.GetAllResources()),
+		)
 	})
 
 	e.POST("/resources", func(c echo.Context) error {
 		name := c.FormValue("name")
+		slug := c.FormValue("slug")
 
-		id += 1
-		tempResources = append(tempResources, db.Resource{
-			Id:   id,
-			Name: name,
-		})
+		db.SaveResource(name, slug)
 
-		return httpren.Render(c, http.StatusOK, view.ResourceList(tempResources))
+		return httpren.Render(
+			c,
+			http.StatusOK,
+			view.ResourceList(db.GetAllResources()),
+		)
+	})
+
+	e.POST("/verificator/resources/slug", func(c echo.Context) error {
+		slug := strf.Slug(c.FormValue("name"))
+
+		return httpren.Render(c, http.StatusOK, view.SlugForm(slug))
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))

@@ -19,6 +19,7 @@ type ResourceField struct {
 type Resource struct {
 	Id        int
 	Name      string
+	Slug      string
 	Field     []ResourceField
 	CreatedAt time.Time
 	UpdatedAt time.Time

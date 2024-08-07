@@ -28,13 +28,52 @@ templ index(resources []db.Resource) {
 }
 
 templ form() {
-	<form hx-post="/resources" hx-swap="outerHTML" hx-target="#resource-list" class="flex flex-col space-y-2">
+	<form
+		hx-post="/resources"
+		hx-swap="outerHTML"
+		hx-target="#resource-list"
+		class="flex flex-col space-y-2"
+	>
 		<div>
-			Name:
-			<input type="text" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+			<span>Name: </span>
+			<input
+				type="text"
+				name="name"
+				required="true"
+				class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+			/>
 		</div>
-		<button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+		<div>
+			@SlugForm("")
+		</div>
+		<button
+			type="submit"
+			hx-include="[name='name']"
+			class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+		>
 			Save
 		</button>
 	</form>
+}
+
+templ SlugForm(slugVal string) {
+	<div class="space-y-2" id="slug-section">
+		<div class="flex flex-row space-x-2 items-center">
+			<span>Slug:</span>
+			<button
+				hx-post="/verificator/resources/slug"
+				hx-target="#slug-section"
+				class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+			>
+				Generate
+			</button>
+		</div>
+		<input
+			type="text"
+			name="slug"
+			required="true"
+			value={ slugVal }
+			class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+		/>
+	</div>
 }
