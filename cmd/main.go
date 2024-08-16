@@ -1,9 +1,9 @@
 package main
 
 import (
-	"FaisalBudiono/see-this/app/db"
-	"FaisalBudiono/see-this/app/httpren"
-	"FaisalBudiono/see-this/app/strf"
+	"FaisalBudiono/see-this/internal/db"
+	"FaisalBudiono/see-this/internal/httpren"
+	"FaisalBudiono/see-this/internal/strf"
 	"FaisalBudiono/see-this/view"
 	"net/http"
 
