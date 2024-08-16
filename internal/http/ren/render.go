@@ -1,4 +1,4 @@
-package httpren
+package ren
 
 import (
 	"github.com/a-h/templ"

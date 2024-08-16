@@ -2,7 +2,7 @@ package main
 
 import (
 	"FaisalBudiono/see-this/internal/db"
-	"FaisalBudiono/see-this/internal/httpren"
+	"FaisalBudiono/see-this/internal/http/ren"
 	"FaisalBudiono/see-this/internal/strf"
 	"FaisalBudiono/see-this/view"
 	"net/http"
@@ -21,7 +21,7 @@ func main() {
 	e.Use(middleware.Logger())
 
 	e.GET("/", func(c echo.Context) error {
-		return httpren.Render(
+		return ren.Render(
 			c,
 			http.StatusOK,
 			view.IndexPage(db.GetAllResources()),
@@ -34,7 +34,7 @@ func main() {
 
 		db.SaveResource(name, slug)
 
-		return httpren.Render(
+		return ren.Render(
 			c,
 			http.StatusOK,
 			view.ResourceList(db.GetAllResources()),
@@ -44,7 +44,7 @@ func main() {
 	e.POST("/verificator/resources/slug", func(c echo.Context) error {
 		slug := strf.Slug(c.FormValue("name"))
 
-		return httpren.Render(c, http.StatusOK, view.SlugForm(slug))
+		return ren.Render(c, http.StatusOK, view.SlugForm(slug))
 	})
 
 	e.Logger.Fatal(e.Start(":8080"))
