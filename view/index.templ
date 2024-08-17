@@ -21,8 +21,8 @@ templ ResourceList(res []db.Resource) {
 }
 
 templ mainContent(res []db.Resource, content templ.Component) {
-	<div class="flex flex-row w-full space-x-5">
-		<nav class="flex flex-col basis-2/12 space-y-5 bg-slate-900">
+	<div class="flex flex-row w-full space-x-2 min-h-screen">
+		<nav class="flex flex-col basis-2/12 space-y-5 bg-slate-900 p-2">
 			<a class="border border-white p-5" href="/">
 				HOME
 			</a>
@@ -35,15 +35,15 @@ templ mainContent(res []db.Resource, content templ.Component) {
 }
 
 templ index(res []db.Resource) {
-	@mainContent(res, form())
+	@mainContent(res, formResource())
 }
 
-templ form() {
+templ formResource() {
 	<form
 		hx-post="/resources"
 		hx-swap="outerHTML"
 		hx-target="#resource-list"
-		class="flex flex-col space-y-2"
+		class="flex flex-col p-6 border rounded-lg shadow-lg bg-gray-800 border-gray-700 space-y-2"
 	>
 		<div>
 			<span>Name: </span>

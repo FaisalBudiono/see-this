@@ -18,9 +18,109 @@ templ notFound() {
 
 templ resourceDetail(r db.Resource) {
 	<div
-		class="flex flex-col p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-700"
+		class="flex flex-col p-6 border rounded-lg shadow-lg bg-gray-800 border-gray-700 space-y-2"
 	>
-		<div>Name: { r.Name }</div>
-		<div>Slug: { r.Slug }</div>
+		<h1 class="text-4xl">
+			{ r.Name }
+			<span class="text-slate-400">({ r.Slug })</span>
+		</h1>
+		<div>
+			<div class="flex space-x-4">
+				<h1 class="text-2xl">Field</h1>
+				<button
+					class="text-white bg-gray-500 hover:bg-gray-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none"
+				>
+					Add Field
+				</button>
+			</div>
+			<form
+				class="flex flex-col p-5 border rounded-lg shadow-lg bg-gray-800 border-gray-700 text-sm my-2 space-y-2"
+			>
+				<div>
+					<label for="field-name" class="cursor-pointer">Name: </label>
+					<input
+						type="text"
+						id="field-name"
+						name="name"
+						required="true"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					/>
+				</div>
+				<div>
+					<label for="field-type" class="cursor-pointer">Type: </label>
+					<input
+						type="text"
+						id="field-type"
+						name="type"
+						required="true"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					/>
+				</div>
+				<div class="flex flex-row items-center space-x-2">
+					<input
+						id="field-is-nullable"
+						name="is-nullable"
+						type="checkbox"
+						value=""
+						class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+					/>
+					<label for="field-is-nullable" class="cursor-pointer">nullable</label>
+				</div>
+				<div class="flex flex-row items-center space-x-2">
+					<input
+						id="field-is-array"
+						name="is-array"
+						type="checkbox"
+						value=""
+						class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+					/>
+					<label for="field-is-array" class="cursor-pointer">array</label>
+				</div>
+				<div>
+					<label for="field-default" class="cursor-pointer">Default Value: </label>
+					<input
+						type="text"
+						id="field-default"
+						name="type"
+						required="true"
+						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					/>
+				</div>
+			</form>
+		</div>
+		<div class="relative overflow-x-auto">
+			<table class="w-full text-sm text-left rtl:text-right text-gray-400">
+				<thead class="text-xs uppercase bg-gray-700 text-gray-400">
+					<tr>
+						<th scope="col" class="px-6 py-3">Field Name</th>
+						<th scope="col" class="px-6 py-3">Type</th>
+						<th scope="col" class="px-6 py-3">Default</th>
+					</tr>
+				</thead>
+				<tbody>
+					for _, f := range r.Fields {
+						<tr class="border-b bg-gray-800 border-gray-700 text-lg">
+							<th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+								{ f.FieldName }
+							</th>
+							<td class="flex flex-row px-6 py-4 space-x-1 items-center">
+								<span>{ f.Type }</span>
+								if f.IsArray {
+									<span class="text-gray-400">[ ]</span>&nbsp;
+								}
+								if f.IsNullable {
+									<span
+										class="py-1 px-2 border rounded-lg shadow-lg text-xs space-x-2 bg-gray-700 border-gray-600 font-bold text-gray-300"
+									>
+										nullable
+									</span>
+								}
+							</td>
+							<td class="px-6 py-4">{ f.Default }</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 	</div>
 }

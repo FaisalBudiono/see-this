@@ -20,7 +20,7 @@ type Resource struct {
 	Id        int
 	Name      string
 	Slug      string
-	Field     []ResourceField
+	Fields    []ResourceField
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

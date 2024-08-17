@@ -7,7 +7,8 @@ import (
 
 var (
 	tempResources []Resource
-	id            int
+	idR           int
+	idF           int
 )
 
 func init() {
@@ -40,13 +41,37 @@ func makeDummyResource() []Resource {
 }
 
 func newResource(name, slug string) Resource {
-	id++
+	idR++
 	return Resource{
-		Id:        id,
-		Name:      name,
-		Slug:      slug,
-		Field:     make([]ResourceField, 0),
+		Id:   idR,
+		Name: name,
+		Slug: slug,
+		Fields: []ResourceField{
+			newField("wan", "string", "", false, true),
+			newField("two", "string", "null", true, false),
+		},
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
+	}
+}
+
+func newField(
+	name string,
+	fieldType string,
+	defaultValue string,
+	isNullable bool,
+	isArray bool,
+) ResourceField {
+	idF++
+	return ResourceField{
+		Id:            idF,
+		FieldName:     name,
+		ResourceRefId: 0,
+		Type:          fieldType,
+		IsNullable:    isNullable,
+		IsArray:       isArray,
+		Default:       defaultValue,
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
 	}
 }
