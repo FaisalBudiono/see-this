@@ -4,7 +4,8 @@
     "tw:watch": "npx tailwindcss -i ./src/input.css -o ./dist/tw.css --watch",
     "tw:build": "npx tailwindcss -i ./src/input.css -o ./dist/tw.css --minify",
     "ts:build": "esbuild src/custom.ts --minify --bundle --outfile=./dist/custom.js",
-    "temple": "templ generate"
+    "templ": "templ generate",
+    "build": "npm run templ && npm run ts:build && npm run tw:build"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
