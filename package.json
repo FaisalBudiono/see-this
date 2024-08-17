@@ -3,10 +3,12 @@
     "tw": "npx tailwindcss -i ./src/input.css -o ./dist/tw.css ",
     "tw:watch": "npx tailwindcss -i ./src/input.css -o ./dist/tw.css --watch",
     "tw:build": "npx tailwindcss -i ./src/input.css -o ./dist/tw.css --minify",
+    "ts:build": "esbuild src/custom.ts --minify --bundle --outfile=./dist/custom.js",
     "temple": "templ generate"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
+    "esbuild": "^0.23.0",
     "tailwindcss": "^3.4.7"
   }
 }
