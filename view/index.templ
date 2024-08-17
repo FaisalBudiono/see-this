@@ -4,27 +4,38 @@ import (
 	"FaisalBudiono/see-this/internal/db"
 )
 
-templ IndexPage(resources []db.Resource) {
-	@Base(index(resources))
+func resourceLink(r db.Resource) string {
+	return "/resources/" + r.Slug
 }
 
-templ ResourceList(resources []db.Resource) {
+templ IndexPage(res []db.Resource) {
+	@Base(index(res))
+}
+
+templ ResourceList(res []db.Resource) {
 	<div id="resource-list" class="flex flex-col">
-		for _, r := range resources {
-			<div>{ r.Name }</div>
+		for _, r := range res {
+			<a href={ templ.URL(resourceLink(r)) }>{ r.Name }</a>
 		}
 	</div>
 }
 
-templ index(resources []db.Resource) {
-	<div class="flex flex-row w-full">
-		<nav class="basis-1/3">
-			@ResourceList(resources)
+templ mainContent(res []db.Resource, content templ.Component) {
+	<div class="flex flex-row w-full space-x-5">
+		<nav class="flex flex-col basis-2/12 space-y-5 bg-slate-900">
+			<a class="border border-white p-5" href="/">
+				HOME
+			</a>
+			@ResourceList(res)
 		</nav>
-		<main class="basis-2/3">
-			@form()
+		<main class="basis-10/12">
+			@content
 		</main>
 	</div>
+}
+
+templ index(res []db.Resource) {
+	@mainContent(res, form())
 }
 
 templ form() {
@@ -48,7 +59,6 @@ templ form() {
 		</div>
 		<button
 			type="submit"
-			hx-include="[name='name']"
 			class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
 		>
 			Save

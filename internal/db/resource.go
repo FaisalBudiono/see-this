@@ -1,18 +1,31 @@
 package db
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 var (
 	tempResources []Resource
 	id            int
 )
 
-func Init() {
+func init() {
 	tempResources = makeDummyResource()
 }
 
 func GetAllResources() []Resource {
 	return tempResources
+}
+
+func FindBySlug(slug string) (Resource, error) {
+	for _, r := range tempResources {
+		if r.Slug == slug {
+			return r, nil
+		}
+	}
+
+	return Resource{}, errors.New("resource not found")
 }
 
 func SaveResource(name, slug string) {

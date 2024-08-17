@@ -14,8 +14,6 @@ import (
 func main() {
 	e := echo.New()
 
-	db.Init()
-
 	e.Static("dist", "dist")
 
 	e.Use(middleware.Logger())
@@ -25,6 +23,25 @@ func main() {
 			c,
 			http.StatusOK,
 			view.IndexPage(db.GetAllResources()),
+		)
+	})
+
+	e.GET("/resources/:slug", func(c echo.Context) error {
+		slug := c.Param("slug")
+
+		r, err := db.FindBySlug(slug)
+		if err != nil {
+			return ren.Render(
+				c,
+				http.StatusNotFound,
+				view.ResourceNotFoundPage(db.GetAllResources()),
+			)
+		}
+
+		return ren.Render(
+			c,
+			http.StatusOK,
+			view.ResourcePage(db.GetAllResources(), r),
 		)
 	})
 
