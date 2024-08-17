@@ -1,12 +1,14 @@
 package view
 
-import "FaisalBudiono/see-this/internal/db"
+import (
+	"FaisalBudiono/see-this/internal/app/port"
+)
 
-templ ResourcePage(res []db.Resource, r db.Resource) {
+templ ResourcePage(res []port.Resource, r port.Resource) {
 	@Base(mainContent(res, resourceDetail(r)))
 }
 
-templ ResourceNotFoundPage(res []db.Resource) {
+templ ResourceNotFoundPage(res []port.Resource) {
 	@Base(mainContent(res, notFound()))
 }
 
@@ -16,7 +18,7 @@ templ notFound() {
 	</div>
 }
 
-templ resourceDetail(r db.Resource) {
+templ resourceDetail(r port.Resource) {
 	<div
 		class="flex flex-col p-6 border rounded-lg shadow-lg bg-gray-800 border-gray-700 space-y-2"
 	>

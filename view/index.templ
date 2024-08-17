@@ -1,18 +1,18 @@
 package view
 
 import (
-	"FaisalBudiono/see-this/internal/db"
+	"FaisalBudiono/see-this/internal/app/port"
 )
 
-func resourceLink(r db.Resource) string {
+func resourceLink(r port.Resource) string {
 	return "/resources/" + r.Slug
 }
 
-templ IndexPage(res []db.Resource) {
+templ IndexPage(res []port.Resource) {
 	@Base(index(res))
 }
 
-templ ResourceList(res []db.Resource) {
+templ ResourceList(res []port.Resource) {
 	<div id="resource-list" class="flex flex-col">
 		for _, r := range res {
 			<a href={ templ.URL(resourceLink(r)) }>{ r.Name }</a>
@@ -20,7 +20,7 @@ templ ResourceList(res []db.Resource) {
 	</div>
 }
 
-templ mainContent(res []db.Resource, content templ.Component) {
+templ mainContent(res []port.Resource, content templ.Component) {
 	<div class="flex flex-row w-full space-x-2 min-h-screen">
 		<nav class="flex flex-col basis-2/12 space-y-5 bg-slate-900 p-2">
 			<a class="border border-white p-5" href="/">
@@ -34,7 +34,7 @@ templ mainContent(res []db.Resource, content templ.Component) {
 	</div>
 }
 
-templ index(res []db.Resource) {
+templ index(res []port.Resource) {
 	@mainContent(res, formResource())
 }
 

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"FaisalBudiono/see-this/internal/db"
-	"FaisalBudiono/see-this/internal/http/ren"
-	"FaisalBudiono/see-this/internal/strf"
+	"FaisalBudiono/see-this/internal/app/adapter"
+	"FaisalBudiono/see-this/internal/app/core/http/ren"
+	"FaisalBudiono/see-this/internal/app/core/strf"
 	"FaisalBudiono/see-this/view"
 	"net/http"
 
@@ -13,35 +13,46 @@ import (
 
 func main() {
 	e := echo.New()
+	db := adapter.NewDB()
 
 	e.Static("dist", "dist")
 
 	e.Use(middleware.Logger())
 
 	e.GET("/", func(c echo.Context) error {
+		res, err := db.GetAllResources()
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "something wrong")
+		}
+
 		return ren.Render(
 			c,
 			http.StatusOK,
-			view.IndexPage(db.GetAllResources()),
+			view.IndexPage(res),
 		)
 	})
 
 	e.GET("/resources/:slug", func(c echo.Context) error {
 		slug := c.Param("slug")
 
+		res, err := db.GetAllResources()
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "something wrong")
+		}
+
 		r, err := db.FindBySlug(slug)
 		if err != nil {
 			return ren.Render(
 				c,
 				http.StatusNotFound,
-				view.ResourceNotFoundPage(db.GetAllResources()),
+				view.ResourceNotFoundPage(res),
 			)
 		}
 
 		return ren.Render(
 			c,
 			http.StatusOK,
-			view.ResourcePage(db.GetAllResources(), r),
+			view.ResourcePage(res, r),
 		)
 	})
 
@@ -49,12 +60,20 @@ func main() {
 		name := c.FormValue("name")
 		slug := c.FormValue("slug")
 
-		db.SaveResource(name, slug)
+		_, err := db.SaveResource(name, slug)
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "something wrong")
+		}
+
+		res, err := db.GetAllResources()
+		if err != nil {
+			return c.String(http.StatusInternalServerError, "something wrong")
+		}
 
 		return ren.Render(
 			c,
 			http.StatusOK,
-			view.ResourceList(db.GetAllResources()),
+			view.ResourceList(res),
 		)
 	})
 
